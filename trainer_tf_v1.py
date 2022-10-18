@@ -3,8 +3,6 @@ import tensorflow as tf
 from gate import GATE
 from utils import process
 
-tf.compat.v1.disable_eager_execution()
-
 class Trainer():
 
     def __init__(self, args):
@@ -17,23 +15,23 @@ class Trainer():
         self.build_session()
 
     def build_placeholders(self):
-        self.A = tf.compat.v1.sparse_placeholder(dtype=tf.float32)
-        self.X = tf.compat.v1.placeholder(dtype=tf.float32)
-        self.S = tf.compat.v1.placeholder(tf.int64)
-        self.R = tf.compat.v1.placeholder(tf.int64)
+        self.A = tf.sparse_placeholder(dtype=tf.float32)
+        self.X = tf.placeholder(dtype=tf.float32)
+        self.S = tf.placeholder(tf.int64)
+        self.R = tf.placeholder(tf.int64)
 
     def build_session(self, gpu= True):
-        config = tf.compat.v1.ConfigProto()
+        config = tf.ConfigProto()
         config.gpu_options.allow_growth = True
         if gpu == False:
             config.intra_op_parallelism_threads = 0
             config.inter_op_parallelism_threads = 0
-        self.session = tf.compat.v1.Session(config=config)
-        self.session.run([tf.compat.v1.global_variables_initializer(), tf.compat.v1.local_variables_initializer()])
+        self.session = tf.Session(config=config)
+        self.session.run([tf.global_variables_initializer(), tf.local_variables_initializer()])
 
 
     def optimize(self, loss):
-        optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=self.args.lr)
+        optimizer = tf.train.AdamOptimizer(learning_rate=self.args.lr)
         gradients, variables = zip(*optimizer.compute_gradients(loss))
         gradients, _ = tf.clip_by_global_norm(gradients, self.args.gradient_clipping)
         self.train_op = optimizer.apply_gradients(zip(gradients, variables))

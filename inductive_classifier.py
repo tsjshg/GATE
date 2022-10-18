@@ -60,7 +60,7 @@ def main(args):
     # Evaluate the quality of embeddings
     classifier = Classifier(vectors=test_embeddings)
     f1s = classifier(idx_train, idx_test, idx_val, Y, seed=0)
-    print f1s
+    print(f1s)
 
 
 if __name__ == "__main__":

@@ -46,7 +46,7 @@ def main(args):
     args.hidden_dims = [feature_dim] + args.hidden_dims
 
     # prepare the data
-    G_tf,  S, R = process.prepare_graph_data(G)
+    G_tf, S, R = process.prepare_graph_data(G)
 
     # Train the Model
     trainer = Trainer(args)
@@ -56,7 +56,7 @@ def main(args):
     # Evaluate the quality of embeddings
     classifier = Classifier(vectors=embeddings)
     f1s = classifier(idx_train, idx_test, idx_val, Y, seed=0)
-    print f1s
+    print(f1s)
 
 if __name__ == "__main__":
     args = parse_args()

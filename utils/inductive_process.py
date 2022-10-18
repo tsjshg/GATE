@@ -1,4 +1,4 @@
-import cPickle
+import pickle
 import numpy as np
 import pickle as pkl
 import networkx as nx
@@ -91,8 +91,8 @@ def load_data(dataset_str): # {'pubmed', 'citeseer', 'cora'}
     labels[test_idx_reorder, :] = labels[test_idx_range, :]
 
     idx_test = test_idx_range.tolist()
-    idx_train = range(len(y))
-    idx_val = range(len(y), len(y)+500)
+    idx_train = list(range(len(y)))
+    idx_val = list(range(len(y), len(y)+500))
 
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
@@ -135,7 +135,7 @@ def load_nell_data(DATASET='nell'):
     NAMES = ['x', 'y', 'tx', 'ty', 'allx', 'ally', 'graph']
     OBJECTS = []
     for i in range(len(NAMES)):
-        OBJECTS.append(cPickle.load(open('data/ind.{}.{}'.format(DATASET, NAMES[i]), 'rb')))
+        OBJECTS.append(pickle.load(open('data/ind.{}.{}'.format(DATASET, NAMES[i]), 'rb')))
     x, y, tx, ty, allx, ally, graph = tuple(OBJECTS)
     test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(DATASET))
     exclu_rang = []
@@ -154,14 +154,14 @@ def load_nell_data(DATASET='nell'):
     down_features = sp.hstack((_x, _y))
     features = sp.vstack((up_features, down_features)).tolil()
     features[test_idx_reorder + exclu_rang, :] = features[range(8922, 65755), :]
-    print "Feature matrix:" + str(features.shape)
+    print("Feature matrix:" + str(features.shape))
 
     # get the labels: y
     up_labels = np.vstack((ally, ty))
     down_labels = np.zeros((55864, 210))
     labels = np.vstack((up_labels, down_labels))
     labels[test_idx_reorder + exclu_rang, :] = labels[range(8922, 65755), :]
-    print "Label matrix:" + str(labels.shape)
+    print("Label matrix:" + str(labels.shape))
 
     # print np.sort(graph.get(17493))
 
@@ -169,12 +169,12 @@ def load_nell_data(DATASET='nell'):
     # adj = nx.to_numpy_matrix(nx.from_dict_of_lists(graph))
     G = nx.from_dict_of_lists(graph)
     adj = nx.adjacency_matrix(G)
-    print "Adjcent matrix:" + str(adj.shape)
+    print("Adjcent matrix:" + str(adj.shape))
 
     # test, validation, train
     idx_test = test_idx_reorder
-    idx_train = range(len(y))
-    idx_val = range(len(y), len(y) + 500)
+    idx_train = list(range(len(y)))
+    idx_val = list(range(len(y), len(y) + 500))
 
     train_mask = sample_mask(idx_train, labels.shape[0])
     val_mask = sample_mask(idx_val, labels.shape[0])
@@ -197,14 +197,14 @@ def load_nell_data(DATASET='nell'):
     ################################################################################
 
     # # record the intermedia result for saving time
-    # cPickle.dump(adj, open('data/cell.adj.pkl', 'wb'))
-    # cPickle.dump(features, open('data/cell.features.pkl', 'wb'))
-    # cPickle.dump(y_train, open('data/cell.yTrain.pkl', 'wb'))
-    # cPickle.dump(y_val, open('data/cell.yVal.pkl', 'wb'))
-    # cPickle.dump(y_test, open('data/cell.yTest.pkl', 'wb'))
-    # cPickle.dump(train_mask, open('data/cell.trainMask.pkl', 'wb'))
-    # cPickle.dump(val_mask, open('data/cell.valMask.pkl', 'wb'))
-    # cPickle.dump(test_mask, open('data/cell.testMask.pkl', 'wb'))
+    # pickle.dump(adj, open('data/cell.adj.pkl', 'wb'))
+    # pickle.dump(features, open('data/cell.features.pkl', 'wb'))
+    # pickle.dump(y_train, open('data/cell.yTrain.pkl', 'wb'))
+    # pickle.dump(y_val, open('data/cell.yVal.pkl', 'wb'))
+    # pickle.dump(y_test, open('data/cell.yTest.pkl', 'wb'))
+    # pickle.dump(train_mask, open('data/cell.trainMask.pkl', 'wb'))
+    # pickle.dump(val_mask, open('data/cell.valMask.pkl', 'wb'))
+    # pickle.dump(test_mask, open('data/cell.testMask.pkl', 'wb'))
 
    # return adj, features, y_train, y_val, y_test, train_mask, val_mask, test_mask
     return adj_train, adj, train_features, features, labels, idx_train, idx_val, idx_test

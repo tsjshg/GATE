@@ -1,5 +1,5 @@
 
-This is a fork of the following repository for converting it to Python3.
+This is a fork of the following repository for converting it to Python3 and Tensorflow2.
 
 
 # GATE
