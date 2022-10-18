@@ -1,3 +1,7 @@
+
+This is a fork of the following repository for converting it to Python3.
+
+
 # GATE
 Graph Attention Auto-Encoders (Attributed Graph Embedding)
 
